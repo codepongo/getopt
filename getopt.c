@@ -219,7 +219,7 @@ static int generate_output(TCHAR *argv[], int argc, const TCHAR *optstr,
 static void parse_error(const TCHAR *message)
 {
 	if (message)
-		warnx(L"%s", message);
+		warnx(L"%s\n", message);
 	fprintf(stderr, "Try `%s --help' for more information.\n",
 		"getopt");
 	exit(PARAMETER_EXIT_CODE);
@@ -316,10 +316,9 @@ static void print_help(void)
 	fputs("\nUsage:\n", stderr);
 
 	fprintf(stderr,
-		" %1$s optstring parameters\n"
-		" %1$s [options] [--] optstring parameters\n"
-		" %1$s [options] -o|--options optstring [options] [--] parameters\n",
-		"getopt");
+		" getopt optstring parameters\n"
+		" getopt [options] [--] optstring parameters\n"
+		" getopt [options] -o|--options optstring [options] [--] parameters\n");
 
 	fputs("\nOptions:\n", stderr);
 	fputs(" -a, --alternative Allow long options starting with single -\n", stderr);
