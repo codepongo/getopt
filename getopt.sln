@@ -1,0 +1,49 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "getopt", "getopt.vcxproj", "{65165A50-1536-4FE8-8B35-96832627D6B7}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4BBAEAA1-9AD1-42D2-B6DC-7F73C4B3D238} = {4BBAEAA1-9AD1-42D2-B6DC-7F73C4B3D238}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "getopt_mb_uni_vc10_dll", "getopt_mb_uni_vc10_dll\getopt_mb_uni_vc10_dll.vcxproj", "{4BBAEAA1-9AD1-42D2-B6DC-7F73C4B3D238}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug Dll|Win32 = Debug Dll|Win32
+		Debug Lib|Win32 = Debug Lib|Win32
+		Debug|Win32 = Debug|Win32
+		Release Dll|Win32 = Release Dll|Win32
+		Release Lib|Win32 = Release Lib|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{65165A50-1536-4FE8-8B35-96832627D6B7}.Debug Dll|Win32.ActiveCfg = Debug|Win32
+		{65165A50-1536-4FE8-8B35-96832627D6B7}.Debug Dll|Win32.Build.0 = Debug|Win32
+		{65165A50-1536-4FE8-8B35-96832627D6B7}.Debug Lib|Win32.ActiveCfg = Debug|Win32
+		{65165A50-1536-4FE8-8B35-96832627D6B7}.Debug Lib|Win32.Build.0 = Debug|Win32
+		{65165A50-1536-4FE8-8B35-96832627D6B7}.Debug|Win32.ActiveCfg = Debug|Win32
+		{65165A50-1536-4FE8-8B35-96832627D6B7}.Debug|Win32.Build.0 = Debug|Win32
+		{65165A50-1536-4FE8-8B35-96832627D6B7}.Release Dll|Win32.ActiveCfg = Release|Win32
+		{65165A50-1536-4FE8-8B35-96832627D6B7}.Release Dll|Win32.Build.0 = Release|Win32
+		{65165A50-1536-4FE8-8B35-96832627D6B7}.Release Lib|Win32.ActiveCfg = Release|Win32
+		{65165A50-1536-4FE8-8B35-96832627D6B7}.Release Lib|Win32.Build.0 = Release|Win32
+		{65165A50-1536-4FE8-8B35-96832627D6B7}.Release|Win32.ActiveCfg = Release|Win32
+		{65165A50-1536-4FE8-8B35-96832627D6B7}.Release|Win32.Build.0 = Release|Win32
+		{4BBAEAA1-9AD1-42D2-B6DC-7F73C4B3D238}.Debug Dll|Win32.ActiveCfg = Debug Dll|Win32
+		{4BBAEAA1-9AD1-42D2-B6DC-7F73C4B3D238}.Debug Dll|Win32.Build.0 = Debug Dll|Win32
+		{4BBAEAA1-9AD1-42D2-B6DC-7F73C4B3D238}.Debug Lib|Win32.ActiveCfg = Debug Lib|Win32
+		{4BBAEAA1-9AD1-42D2-B6DC-7F73C4B3D238}.Debug Lib|Win32.Build.0 = Debug Lib|Win32
+		{4BBAEAA1-9AD1-42D2-B6DC-7F73C4B3D238}.Debug|Win32.ActiveCfg = Debug Lib|Win32
+		{4BBAEAA1-9AD1-42D2-B6DC-7F73C4B3D238}.Debug|Win32.Build.0 = Debug Lib|Win32
+		{4BBAEAA1-9AD1-42D2-B6DC-7F73C4B3D238}.Release Dll|Win32.ActiveCfg = Release Dll|Win32
+		{4BBAEAA1-9AD1-42D2-B6DC-7F73C4B3D238}.Release Dll|Win32.Build.0 = Release Dll|Win32
+		{4BBAEAA1-9AD1-42D2-B6DC-7F73C4B3D238}.Release Lib|Win32.ActiveCfg = Release Lib|Win32
+		{4BBAEAA1-9AD1-42D2-B6DC-7F73C4B3D238}.Release Lib|Win32.Build.0 = Release Lib|Win32
+		{4BBAEAA1-9AD1-42D2-B6DC-7F73C4B3D238}.Release|Win32.ActiveCfg = Release Lib|Win32
+		{4BBAEAA1-9AD1-42D2-B6DC-7F73C4B3D238}.Release|Win32.Build.0 = Release Lib|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
