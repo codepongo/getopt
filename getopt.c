@@ -51,14 +51,13 @@
 #define XALLOC_EXIT_CODE 3
 #define TEST_EXIT_CODE 4
 
-#define GETOPT_VERSION "1.1.4"
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 //#include <unistd.h>
 #include <ctype.h>
 #include <getopt.h>
+#include "version.h"
 
 //#include "closestream.h"
 //#include "nls.h"
@@ -68,6 +67,11 @@
 #define xfree free
 #define warnx(x, y) fprintf(stderr, (x), (y))
 #define _(x) (x)
+
+// see http://stackoverflow.com/a/240370 for how to convert GETOPT_VERSION
+// to a string.
+#define STRINGIFY(X) #X
+#define TOSTRING(X) STRINGIFY(X)
 
 /* NON_OPT is the code that is returned when a non-option is found in '+'
 * mode */
@@ -448,7 +452,7 @@ int main(int argc, char *argv[])
 			quote = 0;
 			break;
 		case 'V':
-			printf(_("getopt from %s\n"), GETOPT_VERSION);
+			printf(_("getopt %s\n"), TOSTRING(GETOPT_VERSION));
 			return EXIT_SUCCESS;
 		case '?':
 		case ':':

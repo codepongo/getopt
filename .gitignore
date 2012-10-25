@@ -10,3 +10,5 @@ _ReSharper*/
 *.suo
 *.filters
 *.opensdf
+
+version.h
