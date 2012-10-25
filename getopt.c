@@ -64,6 +64,7 @@
 //#include "xalloc.h"
 #define xmalloc (TCHAR*)malloc
 #define xrealloc realloc
+#define xfree free
 #define warnx _tprintf
 
 /* NON_OPT is the code that is returned when a non-option is found in '+'
@@ -96,6 +97,8 @@ static void add_longopt(const TCHAR *name, int has_arg);
 static void print_help(void);
 static void set_shell(const TCHAR *new_shell);
 
+static TCHAR *BUFFER = NULL;
+
 /*
 * This function 'normalizes' a single argument: it puts single quotes
 * around it and escapes other special characters. If quote is false, it
@@ -107,13 +110,12 @@ static void set_shell(const TCHAR *new_shell);
 */
 static const TCHAR *normalize(const TCHAR *arg)
 {
-	static TCHAR *BUFFER = NULL;
 	const TCHAR *argptr = arg;
 	TCHAR *bufptr;
 
 	if (!quote) {
 		/* Just copy arg */
-		BUFFER = xmalloc(wcslen(arg) + 1);
+		BUFFER = xrealloc(BUFFER, (_tcslen(arg) + 1) * sizeof(TCHAR));
 		wcscpy(BUFFER, arg);
 		return BUFFER;
 	}
@@ -124,7 +126,7 @@ static const TCHAR *normalize(const TCHAR *arg)
 	* and an opening quote! We need also the global opening and closing
 	* quote, and one extra character for '\0'.
 	*/
-	BUFFER = xmalloc(wcslen(arg) * 4 + 3);
+	BUFFER = xrealloc(BUFFER, (_tcslen(arg) * 4 + 3) * sizeof(TCHAR));
 
 	bufptr = BUFFER;
 	*bufptr++ = '\'';
@@ -186,30 +188,38 @@ static int generate_output(TCHAR *argv[], int argc, const TCHAR *optstr,
 	while ((opt =
 		(getopt_long_fp(argc, argv, optstr, longopts, &longindex)))
 		!= EOF)
+	{
 		if (opt == '?' || opt == ':')
 			exit_code = GETOPT_EXIT_CODE;
-		else if (!quiet_output) {
-			if (opt == LONG_OPT) {
+		else if (!quiet_output)
+		{
+			if (opt == LONG_OPT)
+			{
 				_tprintf(L" --%s", longopts[longindex].name);
 				if (longopts[longindex].has_arg)
 					_tprintf(L" %s", normalize(optarg ? optarg : L""));
-			} else if (opt == NON_OPT)
+			}
+			else if (opt == NON_OPT)
 				_tprintf(L" %s", normalize(optarg));
-			else {
+			else
+			{
 				_tprintf(L" -%c", opt);
 				charptr = _tcschr(optstr, opt);
 				if (charptr != NULL && *++charptr == ':')
 					_tprintf(L" %s", normalize(optarg ? optarg : L""));
 			}
 		}
+	}
 
-		if (!quiet_output) {
-			_tprintf(L" --");
-			while (optind < argc)
-				_tprintf(L" %s", normalize(argv[optind++]));
-			_tprintf(L"\n");
-		}
-		return exit_code;
+	if (!quiet_output)
+	{
+		_tprintf(L" --");
+		while (optind < argc)
+			_tprintf(L" %s", normalize(argv[optind++]));
+		_tprintf(L"\n");
+	}
+	xfree((void*)optstr);
+	return exit_code;
 }
 
 /*
@@ -237,7 +247,7 @@ static void add_longopt(const TCHAR *name, int has_arg)
 	TCHAR *tmp;
 	if (!name) {
 		/* init */
-		free(long_options);
+		xfree(long_options);
 		long_options = NULL;
 		long_options_length = 0;
 		long_options_nr = 0;
@@ -260,7 +270,7 @@ static void add_longopt(const TCHAR *name, int has_arg)
 		long_options[long_options_nr - 1].has_arg = has_arg;
 		long_options[long_options_nr - 1].flag = NULL;
 		long_options[long_options_nr - 1].val = LONG_OPT;
-		tmp = xmalloc(_tcslen(name)+1);
+		tmp = xmalloc((_tcslen(name)+1) * sizeof(TCHAR));
 		_tcscpy(tmp, name);
 		long_options[long_options_nr - 1].name = tmp;
 	}
@@ -343,6 +353,7 @@ int wmain(int argc, TCHAR *argv[])
 	TCHAR *name = NULL;
 	int opt;
 	int compatible = 0;
+	int retVal;
 
 	/* Stop scanning as soon as a non-option argument is found! */
 	static const TCHAR *shortopts = L"+ao:l:n:qQs:TuhV";
@@ -386,7 +397,7 @@ int wmain(int argc, TCHAR *argv[])
 
 	if (argv[1][0] != '-' || compatible) {
 		quote = 0;
-		optstr = (TCHAR*)xmalloc(_tcslen(argv[1]) + 1);
+		optstr = (TCHAR*)xmalloc((_tcslen(argv[1]) + 1) * sizeof(TCHAR));
 		_tcscpy(optstr, argv[1] + _tcsspn(argv[1], L"-+"));
 		argv[1] = argv[0];
 		return generate_output(argv + 1, argc - 1, optstr,
@@ -402,16 +413,16 @@ int wmain(int argc, TCHAR *argv[])
 		case 'h':
 			print_help();
 		case 'o':
-			free(optstr);
-			optstr = xmalloc(_tcslen(optarg) + 1);
+			xfree(optstr);
+			optstr = xmalloc((_tcslen(optarg) + 1) * sizeof(TCHAR));
 			_tcscpy(optstr, optarg);
 			break;
 		case 'l':
 			add_long_options(optarg);
 			break;
 		case 'n':
-			free(name);
-			name = xmalloc(_tcslen(optarg) + 1);
+			xfree(name);
+			name = xmalloc((_tcslen(optarg) + 1) * sizeof(TCHAR));
 			_tcscpy(name, optarg);
 			break;
 		case 'q':
@@ -429,9 +440,7 @@ int wmain(int argc, TCHAR *argv[])
 			quote = 0;
 			break;
 		case 'V':
-			_tprintf(L"%s from %s\n",
-				"getopt",
-				"eb");
+			_tprintf(L"getopt\n");
 			return EXIT_SUCCESS;
 		case '?':
 		case ':':
@@ -444,7 +453,7 @@ int wmain(int argc, TCHAR *argv[])
 		if (optind >= argc)
 			parse_error(L"missing optstring argument");
 		else {
-			optstr = xmalloc(_tcslen(argv[optind]) + 1);
+			optstr = xmalloc((_tcslen(argv[optind]) + 1) * sizeof(TCHAR));
 			_tcscpy(optstr, argv[optind]);
 			optind++;
 		}
@@ -454,6 +463,8 @@ int wmain(int argc, TCHAR *argv[])
 	else
 		argv[optind - 1] = argv[0];
 
-	return generate_output(argv + optind - 1, argc-optind + 1,
+	retVal = generate_output(argv + optind - 1, argc-optind + 1,
 		optstr, long_options);
+	xfree(BUFFER);
+	return retVal;
 }
