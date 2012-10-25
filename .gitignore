@@ -2,6 +2,7 @@ bin/
 Debug*/
 ipch/
 Release*/
+_ReSharper*/
 
 *.swp
 *.sdf
